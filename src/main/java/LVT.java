@@ -1,9 +1,13 @@
 import java.math.BigInteger;
 
 public class LVT {
-    static public byte[] encodeLength(BigInteger value) {
-        assert (value.compareTo(BigInteger.ZERO) > 0);
-        assert (value.bitLength() <= 1008);
+    static public byte[] encodeLength(BigInteger value) throws IllegalArgumentException {
+        if (value.compareTo(BigInteger.ZERO) <= 0) {
+            throw new IllegalArgumentException("Length value must be positive");
+        }
+        if (value.bitLength() >= 1009) {
+            throw new IllegalArgumentException("Length value must not exceed 2^1008");
+        }
         if (value.compareTo(BigInteger.valueOf(127)) <= 0) {
             byte[] encoded = new byte[1];
             encoded[0] = (byte) (value.intValue() & 0x7F);
@@ -22,7 +26,7 @@ public class LVT {
     static public BigInteger decodeLength(byte[] value) {
         boolean isShortForm = (value[0] & (1 << 7)) == 0;
         if (isShortForm) {
-            return BigInteger.valueOf(value[0] & 0x7F);
+            return BigInteger.valueOf(value[0]);
         }
         int length = value[0] & 0x7F;
         value[0] = 0;

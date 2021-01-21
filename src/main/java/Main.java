@@ -1,9 +1,9 @@
 import java.math.BigInteger;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IllegalArgumentException {
         if (args.length != 2) {
-            throw new Exception("Expected exactly 2 arguments");
+            throw new IllegalArgumentException("Expected exactly 2 arguments");
         }
         if (args[0].equals("e")) {
             BigInteger value = new BigInteger(args[1]);
@@ -21,6 +21,9 @@ public class Main {
             encoded = tmp;
             BigInteger value = LVT.decodeLength(encoded);
             System.out.println(value);
+        }
+        else {
+            throw new IllegalArgumentException("First argument must be either 'e' or 'd'");
         }
     }
 }
